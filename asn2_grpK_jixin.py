@@ -98,7 +98,7 @@ P_LEFT = 870
 
 #Reactive control, distance threshold, used to avoid hitting the wall. If exceed threshold, just immediately skip the current step and move on
 DISTANCE_PLAN = 340
-DISTANCE_BLOCK = 400
+DISTANCE_BLOCK = 350
 
 def set_all_default():
     board.bus_servo_set_position(1, [
