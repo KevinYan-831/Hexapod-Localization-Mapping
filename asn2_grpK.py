@@ -98,7 +98,7 @@ P_LEFT = 870
 
 #Reactive control, distance threshold, used to avoid hitting the wall. If exceed threshold, just immediately skip the current step and move on
 DISTANCE_PLAN = 340
-DISTANCE_BLOCK = 300
+DISTANCE_BLOCK = 400
 
 def set_all_default():
     board.bus_servo_set_position(1, [
@@ -353,7 +353,7 @@ def ExitCrabwalk(duration = 0.1):
     board.bus_servo_set_position(duration, [[2,200], [17, 800]])
     time.sleep(duration)
 def adjustment(duration, left_distance, right_distance, THRESHOLD1 = 20, THRESHOLD2 = 20): #Negative distance corresponds to movement to the left
-    tilelength = 608
+    tilelength = 620
     if right_distance > 300:
         while right_distance - tilelength > 0:
             right_distance -= tilelength
@@ -395,7 +395,7 @@ def move_one_tile():
     print(f"Moving One Tile, current left: {cur_left}, current right: {cur_right}")
 
     #then make adjustment using the crab walk
-    adjustment(0.7, cur_left,cur_right)
+    adjustment(0.5, cur_left,cur_right)
     
     # repetitions = reps * 4
     # if repetitions > 4:
