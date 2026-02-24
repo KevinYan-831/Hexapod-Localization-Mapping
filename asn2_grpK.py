@@ -98,7 +98,7 @@ P_LEFT = 870
 
 #Reactive control, distance threshold, used to avoid hitting the wall. If exceed threshold, just immediately skip the current step and move on
 DISTANCE_PLAN = 340
-DISTANCE_BLOCK = 300
+DISTANCE_BLOCK = 350
 
 def set_all_default():
     board.bus_servo_set_position(1, [
@@ -353,7 +353,7 @@ def ExitCrabwalk(duration = 0.1):
     board.bus_servo_set_position(duration, [[2,200], [17, 800]])
     time.sleep(duration)
 def adjustment(duration, left_distance, right_distance, THRESHOLD1 = 20, THRESHOLD2 = 20): #Negative distance corresponds to movement to the left
-    tilelength = 608
+    tilelength = 620
     if right_distance > 300:
         while right_distance - tilelength > 0:
             right_distance -= tilelength
@@ -363,10 +363,10 @@ def adjustment(duration, left_distance, right_distance, THRESHOLD1 = 20, THRESHO
     # this adjust robot's heading
     if left_distance - right_distance > THRESHOLD1: # rotate left
         rot_amount = int( (left_distance - right_distance) / 3)
-        turn_right(duration, 0.5, rot_amount, 100)
+        turn_left(duration, 0.5, rot_amount, 100)
     elif left_distance - right_distance <  -THRESHOLD1: # rotate right
         rot_amount = int((left_distance - right_distance) / 3)
-        turn_left(duration, 0.5, rot_amount, 100)
+        turn_right(duration, 0.5, rot_amount, 100)
 
     #Crabwalk, adjusting robot's position relative to the path's center
     if left_distance - right_distance > THRESHOLD2: # If robot is too far to the right 
@@ -395,7 +395,7 @@ def move_one_tile():
     print(f"Moving One Tile, current left: {cur_left}, current right: {cur_right}")
 
     #then make adjustment using the crab walk
-    adjustment(0.7, cur_left,cur_right)
+    adjustment(0.5, cur_left, cur_right)
     
     # repetitions = reps * 4
     # if repetitions > 4:
@@ -1074,7 +1074,7 @@ def scan_and_detect_walls(cur_x, cur_y, cur_heading, given_map, prev_x=None, pre
     distance_east = DISTANCE_NO_WALL
     distance_west = DISTANCE_NO_WALL
     #constat for detection error
-    ERROR_RANGE = 20
+
 
     front_distance, cur_left_distance, cur_right_distance = LookAround()
 
@@ -1223,22 +1223,22 @@ def scan_and_detect_walls(cur_x, cur_y, cur_heading, given_map, prev_x=None, pre
 
 
     # Update the map with detected obstacles
-    if distance_east <= DISTANCE_BLOCK + ERROR_RANGE:
+    if distance_east <= DISTANCE_BLOCK :
         given_map.setObstacle(cur_x,cur_y, 1, DIRECTION.East)
     else:
         given_map.setObstacle(cur_x,cur_y, 0, DIRECTION.East)
 
-    if distance_north <= DISTANCE_BLOCK + ERROR_RANGE:
+    if distance_north <= DISTANCE_BLOCK :
         given_map.setObstacle(cur_x,cur_y, 1, DIRECTION.North)
     else:
         given_map.setObstacle(cur_x,cur_y, 0, DIRECTION.North)
 
-    if distance_south <= DISTANCE_BLOCK + ERROR_RANGE:
+    if distance_south <= DISTANCE_BLOCK :
         given_map.setObstacle(cur_x,cur_y, 1, DIRECTION.South)
     else:
         given_map.setObstacle(cur_x,cur_y, 0, DIRECTION.South)
 
-    if distance_west <= DISTANCE_BLOCK + ERROR_RANGE:
+    if distance_west <= DISTANCE_BLOCK :
         given_map.setObstacle(cur_x,cur_y, 1, DIRECTION.West)
     else:
         given_map.setObstacle(cur_x,cur_y, 0, DIRECTION.West)
